@@ -2,28 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SPPM FMIPA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ $title ?? 'SPPM FMIPA' }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
+<body class="bg-gray-100 text-gray-800">
 
-<body class="bg-gray-100">
-    
-    <!-- NAV -->
-    <nav class="bg-white shadow p-4">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <a href="/" class="font-bold text-lg">SPPM FMIPA</a>
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="font-bold text-lg text-blue-700">SPPM FMIPA</a>
 
-            <div class="flex items-center gap-4">
-                <a href="/prestasi" class="hover:text-blue-600">Daftar Prestasi</a>
+            <div class="flex space-x-6">
+                <a href="/" class="hover:text-blue-600">Beranda</a>
+                <a href="/prestasi" class="hover:text-blue-600">Prestasi</a>
 
                 @auth
-                    <span class="text-sm text-gray-700">Halo, {{ auth()->user()->nama_mahasiswa }}</span>
-                    <form method="POST" action="/logout">
+                    <form action="/logout" method="POST">
                         @csrf
-                        <button class="text-red-500 hover:underline">Logout</button>
+                        <button class="text-red-500 hover:underline">
+                            Logout ({{ auth()->user()->nama_mahasiswa }})
+                        </button>
                     </form>
                 @else
-                    <a href="/login" class="text-blue-600 hover:underline">Login</a>
+                    <a href="/login" class="hover:text-blue-600">Login</a>
                 @endauth
             </div>
         </div>
@@ -31,12 +34,13 @@
 
     <!-- CONTENT -->
     <main class="max-w-6xl mx-auto p-6">
+        {{ $slot ?? '' }}
         @yield('content')
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-gray-900 text-white p-4 text-center text-sm">
-        Sistem Pendataan Prestasi Mahasiswa - FMIPA Udayana © {{ date('Y') }}
+    <footer class="mt-10 bg-gray-900 text-white text-center py-3 text-sm">
+        © {{ date('Y') }} FMIPA Udayana — Sistem Pendataan Prestasi Mahasiswa
     </footer>
 
 </body>
