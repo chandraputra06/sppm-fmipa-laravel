@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\PublicPrestasiController;
+use App\Http\Controllers\KomentarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +46,16 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::get('/dashboard', function () {
         return "<h1 style='font-family: sans-serif;'>🎉 Selamat datang di Dashboard Admin!</h1>";
     })->name('dashboard');
-
 });
+
+Route::get('/', [PublicPrestasiController::class, 'home'])->name('home');
+Route::get('/prestasi', [PublicPrestasiController::class, 'index'])->name('prestasi.index');
+Route::get('/prestasi/{id}', [PublicPrestasiController::class, 'show'])->name('prestasi.show');
+
+// komentar hanya untuk mahasiswa login
+Route::post('/prestasi/{id}/komentar', [KomentarController::class, 'store'])
+    ->middleware('auth')
+    ->name('prestasi.komentar.store');
 
 
 require __DIR__.'/auth.php';
