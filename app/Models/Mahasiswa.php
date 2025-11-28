@@ -11,7 +11,7 @@ class Mahasiswa extends Authenticatable
 
     protected $table = 'users_mahasiswa';
     protected $primaryKey = 'nim';
-    public $incrementing = false;       // karena PK string
+    public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -24,16 +24,4 @@ class Mahasiswa extends Authenticatable
     protected $hidden = [
         'password',
     ];
-
-    // Relasi: satu mahasiswa bisa punya banyak komentar
-    public function komentar()
-    {
-        return $this->hasMany(Komentar::class, 'nim_mahasiswa', 'nim');
-    }
-
-    // Relasi opsional: satu mahasiswa bisa punya banyak prestasi
-    public function prestasi()
-    {
-        return $this->hasMany(Prestasi::class, 'nim_mahasiswa', 'nim');
-    }
 }
