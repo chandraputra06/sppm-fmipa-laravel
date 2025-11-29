@@ -37,8 +37,18 @@ class PublicPrestasiController extends Controller
     public function show($id)
     {
         $prestasi = Prestasi::findOrFail($id);
-        $komentar = $prestasi->komentar()->with('mahasiswa')->orderBy('created_at', 'desc')->get();
+
+        // Cegah akses jika belum dipublikasikan
+        if ($prestasi->status !== 'Dipublikasikan') {
+            abort(404);
+        }
+
+        $komentar = $prestasi->komentar()
+            ->with('mahasiswa')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('public.prestasi.show', compact('prestasi', 'komentar'));
     }
+
 }
